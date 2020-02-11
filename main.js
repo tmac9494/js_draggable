@@ -21,7 +21,8 @@ class Draggable {
 		this.container.addEventListener('touchend', this.handleMouseUp);
 		this.container.addEventListener('mousemove', this.handleMouseMove);
 		this.container.addEventListener('touchmove', this.handleMouseMove);
-		this.container.addEventListener('mouseleave', this.handleMouseUp);
+		this.container.addEventListener('mouseleave', this.handleMouseLeave);
+		this.container.addEventListener('mouseenter', this.handleMouseEnter);
 		window.addEventListener('scroll', this.handleScroll)
 	}
 	handleScroll = e => {
@@ -39,9 +40,10 @@ class Draggable {
 		this.moveFrame = null;
 	}
 	move = () => {
+    if (!this.dragging) this.dragging = true;
 		if (this.atEnd) this.stopMoving()
 		else {
-			this.handlePosition(-.5);
+			this.handlePosition(-.55);
 			this.moveFrame = requestAnimationFrame(this.move);
 		}
 	}
@@ -61,8 +63,14 @@ class Draggable {
 	handleMouseUp = e => {
 		this.mousedown = false;
 		this.start = null;
-		if (!this.moving) this.startMoving();
+    this.dragging = false;
 	}
+  handleMouseEnter = e => this.moving ? this.stopMoving() : null;
+  handleMouseLeave = e => {
+    if (!this.moving) this.startMoving();
+    this.mousedown = false;
+    this.dragging = false;
+  }
 	handlePosition = distance => {
 		let update = this.xPos + distance;
 		// at start check
@@ -74,7 +82,7 @@ class Draggable {
 	handleRender = (update) => {
 		this.xPos = update;
 		requestAnimationFrame(() => {
-			this.target.style.transform = 'translateX(' + this.xPos + 'px)';
+			this.target.style.transform = 'translate(' + this.xPos + 'px, -50%)';
 		})
 	}
 }
