@@ -7,7 +7,7 @@ class Draggable {
 		this.dragging = false;
 		this.start = null;
 		this.xPos = 0;
-		this.max = (window.innerWidth - (window.innerWidth * .4)) - this.target.clientWidth;
+		this.max = (window.innerWidth - (window.innerWidth * .6)) - this.target.clientWidth;
 		this.moving = false;
 		this.moveFrame = null;
 		this.handleScroll();
@@ -43,7 +43,7 @@ class Draggable {
     if (!this.dragging) this.dragging = true;
 		if (this.atEnd) this.stopMoving()
 		else {
-			this.handlePosition(-.55);
+			this.handlePosition(-.5);
 			this.moveFrame = requestAnimationFrame(this.move);
 		}
 	}
